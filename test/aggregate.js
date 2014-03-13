@@ -42,6 +42,12 @@ test("Max", function ()
 
     actual = Enumerable.Range(1, 10).Select("v,i=>{v:v,i:i}").Max("t=>t.i");
     equal(actual, 9);
+
+    actual = Enumerable.From([1, 2, undefined]).Max();
+    equal(actual, 2);
+
+    actual = Enumerable.From([1, 2, null]).Max();
+    equal(actual, 2);
 });
 
 test("Min", function ()
@@ -51,17 +57,35 @@ test("Min", function ()
 
     actual = Enumerable.Range(1, 10).Select("v,i=>{v:v,i:i}").Min("t=>t.i");
     equal(actual, 0);
+
+    actual = Enumerable.From([1, 2, undefined]).Min();
+    equal(actual, 1);
+
+    actual = Enumerable.From([1, 2, null]).Min();
+    equal(actual, 1);
 });
 
 test("MaxBy", function ()
 {
     actual = Enumerable.Range(1, 10).Select("v,i=>{v:v,i:i}").MaxBy("t=>t.i");
     deepEqual(actual, { v: 10, i: 9 });
+
+    actual = Enumerable.From([1, 2, undefined]).Select("v,i=>{v:v,i:i}").MaxBy("t=>t.v");
+    deepEqual(actual, {v: 2, i:1});
+
+    actual = Enumerable.From([1, 2, null]).Select("v,i=>{v:v,i:i}").MaxBy("t=>t.v");
+    deepEqual(actual, {v: 2, i:1});
 });
 
 test("MinBy", function ()
 {
     actual = Enumerable.Range(1, 10).Select("v,i=>{v:v,i:i}").MinBy("t=>t.i");
+    deepEqual(actual, { v: 1, i: 0 });
+
+    actual = Enumerable.From([1, 2, undefined]).Select("v,i=>{v:v,i:i}").MinBy("t=>t.v");
+    deepEqual(actual, { v: 1, i: 0 });
+
+    actual = Enumerable.From([1, 2, null]).Select("v,i=>{v:v,i:i}").MinBy("t=>t.v");
     deepEqual(actual, { v: 1, i: 0 });
 });
 

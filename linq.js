@@ -1362,7 +1362,15 @@ module.exports = (function ()
         Max: function (selector)
         {
             if (selector == null) selector = Functions.Identity;
-            return this.Select(selector).Aggregate(function (a, b) { return (a > b) ? a : b; });
+            return this.Select(selector).Aggregate(function (a, b) {
+                if (a == null) {
+                    return b;
+                } else if (b == null) {
+                    return a;
+                } else {
+                    return (a > b) ? a : b;
+                }
+            });
         },
 
         // Overload:function()
@@ -1370,19 +1378,43 @@ module.exports = (function ()
         Min: function (selector)
         {
             if (selector == null) selector = Functions.Identity;
-            return this.Select(selector).Aggregate(function (a, b) { return (a < b) ? a : b; });
+            return this.Select(selector).Aggregate(function (a, b) {
+                if (a == null) {
+                    return b;
+                } else if (b == null) {
+                    return a;
+                } else {
+                    return (a < b) ? a : b;
+                }
+            });
         },
 
         MaxBy: function (keySelector)
         {
             keySelector = Utils.CreateLambda(keySelector);
-            return this.Aggregate(function (a, b) { return (keySelector(a) > keySelector(b)) ? a : b });
+            return this.Aggregate(function (a, b) {
+                if (keySelector(a) == null) {
+                    return b;
+                } else if (keySelector(b) == null) {
+                    return a;
+                } else {
+                    return (keySelector(a) > keySelector(b)) ? a : b
+                }
+            });
         },
 
         MinBy: function (keySelector)
         {
             keySelector = Utils.CreateLambda(keySelector);
-            return this.Aggregate(function (a, b) { return (keySelector(a) < keySelector(b)) ? a : b });
+            return this.Aggregate(function (a, b) {
+                if (keySelector(a) == null) {
+                    return b;
+                } else if (keySelector(b) == null) {
+                    return a;
+                } else {
+                    return (keySelector(a) < keySelector(b)) ? a : b;
+                }
+            });
         },
 
         // Overload:function()
